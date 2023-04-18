@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
+#include <time.h>
 #include "utilidades.h"
 
+struct r{
+
+};
 void linha(char formato, int tamanho){
 
     printf("\n ");
@@ -64,9 +68,40 @@ int obterQuantidade(char* titulo){
             case 6:
                 resp = 100000;
                 break;
+            case 7:
+                resp = 100;
+                break;
         }
-        if(op > 0 && op < 7){op = 0;}
+        if(op > 0 && op < 8){op = 0;}
     }
     while(op);
     return resp;
+
+}
+
+int *gerarLista(int tamanho){
+
+    int *lista = (int*) calloc(tamanho, sizeof(int));
+    //int num, rando = rand();
+
+    srand((unsigned) time(NULL));
+
+    for(int i = 0; i < tamanho; i++){
+
+        /*num = ((rand() << 1) & rando) | rando;
+        num = num % 1000000;
+        lista[i] = num;*/
+        lista[i] = rand();
+    }
+    /*
+    for(int i = 0; i < tamanho; i++){
+        printf("%d\n", lista[i]);
+    }
+    system("pause");
+    */
+    return lista;
+}
+
+void mostrarResultados(){
+
 }

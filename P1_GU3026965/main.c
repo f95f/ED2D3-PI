@@ -8,7 +8,7 @@ void main(){
     setlocale(LC_ALL, "");
     int op = -1; // Operação
     int quant = -1; // Quantidade de elementos
-
+    //R resultados; //
     do{
 
         gerarHeader();
@@ -25,7 +25,11 @@ void main(){
         switch(op){
             case 1:
                     quant = obterQuantidade("Shell Sort");
-                    if(quant){ }   //chamar alg.
+                    if(quant){
+
+                        gerarLista(quant);
+                        mostrarResultados(NULL);
+                    }   //chamar alg.
             break;
         }
     }
