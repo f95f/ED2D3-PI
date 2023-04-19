@@ -1,19 +1,21 @@
 # depslib dependency file v1.0
-1681840468 source:c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\main.c
+1681929532 source:c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\main.c
 	<stdio.h>
 	<stdlib.h>
 	<locale.h>
 	"utilidades.h"
 
-1681842968 c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\utilidades.h
+1681929482 c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\utilidades.h
 	<stdio.h>
 	<stdlib.h>
 	<locale.h>
 
-1681842966 source:c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\utilidades.c
+1681929532 source:c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\utilidades.c
 	<stdio.h>
 	<stdlib.h>
 	<locale.h>
 	<time.h>
 	"utilidades.h"
+
+1681843821 source:c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\sorts.c
 

@@ -26,7 +26,16 @@ void gerarHeader(){
 
 }
 
-int obterQuantidade(char* titulo){
+int checkResposta(int resposta, int valorMin, int valorMax){
+
+    if(resposta >= valorMin && resposta <= valorMax){
+        return 1;
+    }
+    return 0;
+
+}
+
+int obterQuantidade(){
 
     int op = -1;
     int resp = 0;
@@ -36,7 +45,7 @@ int obterQuantidade(char* titulo){
         system("cls");
         gerarHeader();
 
-        printf("\n > %s\n - Escolha a quantidade de amostras: \n\n\n", titulo);
+        printf("\n > Escolha a quantidade de amostras: \n\n\n");
 
         printf("    [ 1 ] 1.000 Amostras\n\n");
         printf("    [ 2 ] 5.000 Amostras\n\n");
@@ -49,30 +58,33 @@ int obterQuantidade(char* titulo){
 
         scanf("%d", &op);
 
-        switch(op){
-            case 1:
-                resp = 1000;
-                break;
-            case 2:
-                resp = 5000;
-                break;
-            case 3:
-                resp = 10000;
-                break;
-            case 4:
-                resp = 20000;
-                break;
-            case 5:
-                resp = 50000;
-                break;
-            case 6:
-                resp = 100000;
-                break;
-            case 7:
-                resp = 100;
-                break;
+        if(checkResposta(op, 1, 6)){
+
+            switch(op){
+                case 1:
+                    resp = 1000;
+                    break;
+                case 2:
+                    resp = 5000;
+                    break;
+                case 3:
+                    resp = 10000;
+                    break;
+                case 4:
+                    resp = 20000;
+                    break;
+                case 5:
+                    resp = 50000;
+                    break;
+                case 6:
+                    resp = 100000;
+                    break;
+                case 7:
+                    resp = 100;
+                    break;
+            }
+            op = 0;
         }
-        if(op > 0 && op < 8){op = 0;}
     }
     while(op);
     return resp;
@@ -81,25 +93,71 @@ int obterQuantidade(char* titulo){
 
 int *gerarLista(int tamanho){
 
-    int *lista = (int*) calloc(tamanho, sizeof(int));
-    //int num, rando = rand();
-
     srand((unsigned) time(NULL));
 
-    for(int i = 0; i < tamanho; i++){
+    int *lista = (int*) calloc(tamanho, sizeof(int));
 
-        /*num = ((rand() << 1) & rando) | rando;
-        num = num % 1000000;
-        lista[i] = num;*/
+    for(int i = 0; i < tamanho; i++){
         lista[i] = rand();
     }
-    /*
-    for(int i = 0; i < tamanho; i++){
-        printf("%d\n", lista[i]);
-    }
-    system("pause");
-    */
+
     return lista;
+}
+
+int executar(int op, int quant){
+
+    int *lista;
+
+    for(int i = 0; i < 10; i++){
+
+        lista = gerarLista(quant);
+        t = gerarLista(12);  // Lista para armazenar os tempos de execução do algoritmo
+        if(!lista || !t){ return 0;}
+
+        switch(op){
+
+            case 1:
+
+                // Iniciar contagem
+
+                sortFunction(lista);
+
+                // finalizar contagem
+
+                if(i == 9){
+
+                    //iniciar contagem
+
+                    // medição de tempo natural
+                    sortfunction(lista);
+
+                    // finalizar contagem
+                    // armazenar tempo total no indice ´[10] da lista de tempos
+
+                    lista = inverterLista(lista);
+
+                    //iniciar contagem
+
+                    //medição de tempo pior caso
+                    sort function(lista);
+
+                    // finalziar contagem
+                    // armazenar tempo total no indice ´[11] da lista de tempos
+                }
+            break;
+
+
+        }
+        // obter o tempo total, armazenar em uma lista
+        t[i] = tempoTotal;
+    }
+
+    // imprimir resultados
+
+    free(lista);
+    free(t);
+
+    return 0;
 }
 
 void mostrarResultados(){

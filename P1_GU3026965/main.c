@@ -22,16 +22,15 @@ void main(){
         printf("\n\n\n > Escolha uma opção: ");
         scanf("%d", &op);
 
-        switch(op){
-            case 1:
-                    quant = obterQuantidade("Shell Sort");
-                    if(quant){
+        if(checkResposta(op, 1, 9)){
 
-                        gerarLista(quant);
-                        mostrarResultados(NULL);
-                    }   //chamar alg.
-            break;
+            quant = obterQuantidade();
+            if(quant){
+                //chamar algo
+            }
+
         }
+
     }
     while(op);
 

@@ -9,18 +9,27 @@
 
 // Estrutura para armazenar informações sobre os testes, tais como tempos de execuções.
 typedef struct r R;
+
 // Cria uma linha com o caractere e desejado.
 void linha(char formato, int tamanho);
 
 // Cria um cabeçalho padrão à todas as telas.
 void gerarHeader();
 
+// Função para validação de respostas do usuário - verifica se o valor informado "resposta" está dentro
+// do intervalo informado por parâmetro (valorMin e valorMax).
+int checkResposta(int resposta, int valorMin, int valorMax);
+
 // Chama o submenu, obtem a quantidade indicada pelo usuário e a retorna.
 // Retornará 0 caso o usuário seleciona a opção "Voltar".
-int obterQuantidade(char* titulo);
+int obterQuantidade();
 
 // Retorna um vetor dinâmico de números inteiros aleatórios com a quantidade especificada.
 int *gerarLista(int tamanho);
+
+// Monta a lista de números aleatórios, executa a ordenação de acordo com o algoritmo solicitado
+// e executa a medição de tempo.
+int executar(int op, int quant);
 
 // Recebe uma estrutura com informações sobre o teste e os exibe na tela.
 void mostrarResultados();
