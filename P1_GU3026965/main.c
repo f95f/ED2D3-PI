@@ -30,7 +30,6 @@ void main(){
                 executar(op, quant);
             }
         }
-
     }
     while(op);
 

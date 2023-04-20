@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <time.h>
+#include "sorts.h"
 #include "utilidades.h"
 
 void linha(char formato, int tamanho){
@@ -109,9 +110,9 @@ void amostrar(int *lista, char *descr){
 
     printf("    > Amostra: %s\n ", descr);
 
-    for(int i = 0; i < 100; i++){
+    for(int i = 0; i < 50; i++){
 
-        printf(" %6d |", lista[i + 100] );
+        printf(" %6d |", lista[i + 50] );
 
         if(!(i % 10)){printf("\n ");}
     }
@@ -130,7 +131,7 @@ void mostrarResultados(double *tempos, char *opNome, int quantidade, int *listaO
 
         gerarHeader();
 
-        printf(" > Resultados: %s, %d itens\n\n", opNome, quantidade);
+        printf("\n > Resultados: %s, %d itens\n\n", opNome, quantidade);
 
         for(int i = 0; i < 10; i++){
 
@@ -139,8 +140,8 @@ void mostrarResultados(double *tempos, char *opNome, int quantidade, int *listaO
         }
 
         printf("    -- Tempo médio para cada operação: %fs.\n", tempoMedio);
-        printf("    -- Tempo de operação em caso natural: %fs.\n", tempos[10]);
-        printf("    -- Tempo de operação: em pior caso: %fs.\n", tempos[11]);
+        printf("    -- Tempo de operação para lista organizada: %fs.\n", tempos[10]);
+        printf("    -- Tempo de operação para lista invertida: %fs.\n", tempos[11]);
 
         linha('-', 41);
 
@@ -153,20 +154,20 @@ void mostrarResultados(double *tempos, char *opNome, int quantidade, int *listaO
             gerarHeader();
             printf(" > Resultados: %s\n\n", opNome);
             amostrar(listaOriginal, "Lista original");
-            amostrar(listaOrganizada, "Lista organizada");
+            //amostrar(listaOrganizada, "Lista organizada");
 
             system("pause");
 
         }
     }
-    while(op != 0);
+    while(op);
 
 }
 
 int executar(int op, int quant){
 
     struct timeval antes, depois;
-    int *lista, *listaOriginal, *listaInvertida;
+    int *lista//, *listaOriginal, *listaInvertida, *listaFinal;
     double *t; // Lista para armazenar os tempos.
     char *opNome; // Nome da operação para ser exibido nos resultados
 
@@ -175,18 +176,19 @@ int executar(int op, int quant){
                                                              // para o comportamento natural e para o pior caso.
     system("cls");
     gerarHeader();
-    printf(" > Executando...\n\n");
+    printf("\n > Executando...\n\n");
 
     for(int i = 0; i < 10; i++){
 
+        if(lista){}
         lista = gerarLista(quant);
-        if(i == 9){listaOriginal = lista;} // Armazena última lista antes de organizar para verificação.
+    //    if(i == 9){listaOriginal = lista;} // Armazena última lista antes de organizar para verificação.
 
         if(!lista || !t){ return 0;}
 
         switch(op){
 
-            case 1:
+            case 1: //------------------------->
 
                 gettimeofday(&antes, NULL);
 
@@ -219,16 +221,53 @@ int executar(int op, int quant){
                     printf("    --  T Pior Caso: %fs\n", t[11]);
 
                     opNome = "Sorta";
-                    system("pause");
                 }
+                free(lista);
             break;
 
+            case 2: //------------------------->
+                gettimeofday(&antes, NULL);
+
+               bubbleSort(lista, quant);
+
+                gettimeofday(&depois, NULL);
+                t[i] = medirIntervalo(antes, depois);
+
+                printf("    --  T%d: %fs\n", i + 1, t[i]);
+
+                if(i == 9){
+                     gettimeofday(&antes, NULL);
+
+                    // medição de tempo natural
+                    bubbleSort(lista, quant);
+
+                    gettimeofday(&depois, NULL);
+                    t[10] = medirIntervalo(antes, depois);
+                    printf("    --  T Lista organizada: %fs\n", t[10]);
+
+                    ///listaInvertida = inverterLista(lista);
+
+                     gettimeofday(&antes, NULL);
+
+                    // medição de tempo - pior caso
+                    bubbleSort(lista, quant);
+
+                    gettimeofday(&depois, NULL);
+                    t[11] = medirIntervalo(antes, depois);
+                    printf("    --  T Lista invertida: %fs\n", t[11]);
+
+                    opNome = "Bubble Sort";
+                }
+            break;
         }
 
     }
 
-    mostrarResultados(t, opNome, quant, listaOriginal, lista);
+    mostrarResultados(t, opNome, quant, listaOriginal, listaFinal);
 
+    free(listaInvertida);
+    free(listaOriginal);
+    free(listaFinal);
     free(lista);
     free(t);
 

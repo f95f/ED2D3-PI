@@ -1,9 +1,8 @@
 # depslib dependency file v1.0
-1682010725 source:c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\main.c
+1682027843 source:c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\main.c
 	<stdio.h>
 	<stdlib.h>
 	<locale.h>
-	<time.h>
 	"utilidades.h"
 
 1682004369 c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\utilidades.h
@@ -11,12 +10,22 @@
 	<stdlib.h>
 	<locale.h>
 
-1682010397 source:c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\utilidades.c
+1682030304 source:c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\utilidades.c
 	<stdio.h>
 	<stdlib.h>
 	<locale.h>
 	<time.h>
+	"sorts.h"
 	"utilidades.h"
 
-1681843821 source:c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\sorts.c
+1682026715 source:c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\sorts.c
+	<stdio.h>
+	<stdlib.h>
+	"sorts.h"
+
+1682026533 c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\sorts.c
+
+1682030507 c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\sorts.h
+	<stdio.h>
+	<stdlib.h>
 

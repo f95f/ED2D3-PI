@@ -37,6 +37,7 @@
 		<Unit filename="sorts.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="sorts.h" />
 		<Unit filename="utilidades.c">
 			<Option compilerVar="CC" />
 		</Unit>
