@@ -160,6 +160,18 @@ int executar(int op, int quant){
     return 0;
 }
 
+void amostrar(int *lista, char *descr){
+
+    printf("    > Amostra: %s\n         ->", descr);
+
+    for(int i = 100; i < 200; i++){
+
+        printf(" %d |", lista[i]);
+
+    }
+    printf("\n\n");
+}
+
 void mostrarResultados(){
 
 }
