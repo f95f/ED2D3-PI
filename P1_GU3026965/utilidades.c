@@ -4,9 +4,6 @@
 #include <time.h>
 #include "utilidades.h"
 
-struct r{
-
-};
 void linha(char formato, int tamanho){
 
     printf("\n ");
@@ -79,9 +76,6 @@ int obterQuantidade(){
                 case 6:
                     resp = 100000;
                     break;
-                case 7:
-                    resp = 100;
-                    break;
             }
             op = 0;
         }
@@ -104,74 +98,139 @@ int *gerarLista(int tamanho){
     return lista;
 }
 
+double medirIntervalo(struct timeval Tempo_inicial, struct timeval Tempo_final){
+
+    double deltaT = (Tempo_final.tv_sec + Tempo_final.tv_usec/1000000.0) - (Tempo_inicial.tv_sec + Tempo_inicial.tv_usec/1000000.0);
+    return deltaT;
+
+}
+
+void amostrar(int *lista, char *descr){
+
+    printf("    > Amostra: %s\n ", descr);
+
+    for(int i = 0; i < 100; i++){
+
+        printf(" %6d |", lista[i + 100] );
+
+        if(!(i % 10)){printf("\n ");}
+    }
+    printf("\n\n");
+}
+
+void mostrarResultados(double *tempos, char *opNome, int quantidade, int *listaOriginal, int *listaOrganizada){
+
+    double tempoMedio;
+    int op = -1;
+
+    for(int i = 0; i < 10; i++){ tempoMedio += tempos[i]; }
+    tempoMedio /= 10;
+
+    do{
+
+        gerarHeader();
+
+        printf(" > Resultados: %s, %d itens\n\n", opNome, quantidade);
+
+        for(int i = 0; i < 10; i++){
+
+            printf("    -- %dª Operação: %fs.\n", i + 1, tempos[i]);
+
+        }
+
+        printf("    -- Tempo médio para cada operação: %fs.\n", tempoMedio);
+        printf("    -- Tempo de operação em caso natural: %fs.\n", tempos[10]);
+        printf("    -- Tempo de operação: em pior caso: %fs.\n", tempos[11]);
+
+        linha('-', 41);
+
+        printf("\n    [ 1 ] Exibir Amostra    [ 0 ] Sair\n\n");
+        printf("    > Escolha uma opção: ");
+        scanf("%d", &op);
+
+        if(op == 1){
+
+            gerarHeader();
+            printf(" > Resultados: %s\n\n", opNome);
+            amostrar(listaOriginal, "Lista original");
+            amostrar(listaOrganizada, "Lista organizada");
+
+            system("pause");
+
+        }
+    }
+    while(op != 0);
+
+}
+
 int executar(int op, int quant){
 
-    int *lista;
+    struct timeval antes, depois;
+    int *lista, *listaOriginal, *listaInvertida;
+    double *t; // Lista para armazenar os tempos.
+    char *opNome; // Nome da operação para ser exibido nos resultados
+
+    t =  (double*) calloc(12, sizeof(int));  // Os índices de 0 a 9 armazenarão as 10 primeiras medições.
+                                                             // Os índices 10 e 11 armazenarão, respectivamente, as medições
+                                                             // para o comportamento natural e para o pior caso.
+    system("cls");
+    gerarHeader();
+    printf(" > Executando...\n\n");
 
     for(int i = 0; i < 10; i++){
 
         lista = gerarLista(quant);
-        t = gerarLista(12);  // Lista para armazenar os tempos de execução do algoritmo
+        if(i == 9){listaOriginal = lista;} // Armazena última lista antes de organizar para verificação.
+
         if(!lista || !t){ return 0;}
 
         switch(op){
 
             case 1:
 
-                // Iniciar contagem
+                gettimeofday(&antes, NULL);
 
-                sortFunction(lista);
+               /// sortFunction(lista);
 
-                // finalizar contagem
+                gettimeofday(&depois, NULL);
+                t[i] = medirIntervalo(antes, depois);
+                printf("    --  T%d: %fs\n", i + 1, t[i]);
 
                 if(i == 9){
 
-                    //iniciar contagem
+                     gettimeofday(&antes, NULL);
 
                     // medição de tempo natural
-                    sortfunction(lista);
+                    ///sortfunction(lista);
 
-                    // finalizar contagem
-                    // armazenar tempo total no indice ´[10] da lista de tempos
+                    gettimeofday(&depois, NULL);
+                    t[10] = medirIntervalo(antes, depois);
+                    printf("    --  T Natural: %fs\n", t[10]);
 
-                    lista = inverterLista(lista);
+                    ///listaInvertida = inverterLista(lista);
 
-                    //iniciar contagem
+                     gettimeofday(&antes, NULL);
 
-                    //medição de tempo pior caso
-                    sort function(lista);
+                    // medição de tempo - pior caso
+                    ///sortfunction(lista);
 
-                    // finalziar contagem
-                    // armazenar tempo total no indice ´[11] da lista de tempos
+                    gettimeofday(&depois, NULL);
+                    t[11] = medirIntervalo(antes, depois);
+                    printf("    --  T Pior Caso: %fs\n", t[11]);
+
+                    opNome = "Sorta";
+                    system("pause");
                 }
             break;
 
-
         }
-        // obter o tempo total, armazenar em uma lista
-        t[i] = tempoTotal;
+
     }
 
-    // imprimir resultados
+    mostrarResultados(t, opNome, quant, listaOriginal, lista);
 
     free(lista);
     free(t);
 
     return 0;
-}
-
-void amostrar(int *lista, char *descr){
-
-    printf("    > Amostra: %s\n         ->", descr);
-
-    for(int i = 100; i < 200; i++){
-
-        printf(" %d |", lista[i]);
-
-    }
-    printf("\n\n");
-}
-
-void mostrarResultados(){
-
 }
