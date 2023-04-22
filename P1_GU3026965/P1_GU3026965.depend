@@ -1,16 +1,16 @@
 # depslib dependency file v1.0
-1682027843 source:c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\main.c
+1682193464 source:c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\main.c
 	<stdio.h>
 	<stdlib.h>
 	<locale.h>
 	"utilidades.h"
 
-1682004369 c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\utilidades.h
+1682189274 c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\utilidades.h
 	<stdio.h>
 	<stdlib.h>
 	<locale.h>
 
-1682030304 source:c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\utilidades.c
+1682195654 source:c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\utilidades.c
 	<stdio.h>
 	<stdlib.h>
 	<locale.h>
@@ -18,14 +18,14 @@
 	"sorts.h"
 	"utilidades.h"
 
-1682026715 source:c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\sorts.c
+1682195781 source:c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\sorts.c
 	<stdio.h>
 	<stdlib.h>
 	"sorts.h"
 
 1682026533 c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\sorts.c
 
-1682030507 c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\sorts.h
+1682195844 c:\users\95fel\documents\if\s3\ed2s3\p1\p1_gu3026965\sorts.h
 	<stdio.h>
 	<stdlib.h>
 

@@ -31,7 +31,7 @@ int *gerarLista(int tamanho);
 // e executa a medição de tempo.
 int executar(int op, int quant);
 
-// Obtem uma amostra de 100 números de uma lista e a exibe na tela.
+// Obtem uma amostra de 50 números de uma lista e a exibe na tela.
 // Esta função foi implementada com a intenção de verificar de forma simples a lista antes e depois
 // de ordenada. Recebe a descrição por parâmetro e a exibe na tela.
 void amostrar(int *lista, char *descr);
