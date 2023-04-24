@@ -9,7 +9,6 @@ void main(){
     int op = -1; // Operação
     int quant = -1; // Quantidade de elementos
     //R resultados; //
-
     do{
 
         gerarHeader();

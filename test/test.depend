@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1682363366 source:c:\users\95fel\documents\if\s3\ed2s3\p1\test\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"utils.h"
+
+1682363059 source:c:\users\95fel\documents\if\s3\ed2s3\p1\test\utils.c
+	<stdlib.h>
+	<stdio.h>
+	<time.h>
+	"utils.h"
+
+1682362965 c:\users\95fel\documents\if\s3\ed2s3\p1\test\utils.h
+	<stdio.h>
+	<stdlib.h>
+

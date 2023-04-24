@@ -51,12 +51,13 @@ int obterQuantidade(){
         printf("    [ 4 ] 20.000 Amostras\n\n");
         printf("    [ 5 ] 50.000 Amostras\n\n");
         printf("    [ 6 ] 100.000 Amostras\n\n");
+        printf("    [ 7 ] 10.000.000 Amostras\n\n");
         printf("    [ 0 ] Voltar\n\n\n");
         printf(" > Escolha uma opção: ");
 
         scanf("%d", &op);
 
-        if(checkResposta(op, 1, 6)){
+        if(checkResposta(op, 1, 7)){
 
             switch(op){
                 case 1:
@@ -76,6 +77,9 @@ int obterQuantidade(){
                     break;
                 case 6:
                     resp = 100000;
+                    break;
+                case 7:
+                    resp = 10000000;
                     break;
             }
             op = 0;
@@ -193,8 +197,6 @@ void mostrarResultados(double *tempos, char *opNome, int quantidade, int *listaO
 int executar(int op, int quant){
 
     struct timeval antes, depois;
-    struct timeval antes_organizada, depois_organizada;
-    struct timeval antes_invertida, depois_invertida;
     int aux;
     int *lista, *listaOriginal, *listaInvertida;//, *listaFinal;
     double *t; // Lista para armazenar os tempos.

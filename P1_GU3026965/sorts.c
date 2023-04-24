@@ -3,14 +3,18 @@
 #include "sorts.h"
 #define min(a,b) (a)<(b)?(a):(b)
 
-void shellSort (int *A, int n){
+void shellSort (int A[], int n){
 
     int i, j;
     int h = 1;
     int aux;
-    h = h * 3 + 1;
+   //int ps = 1;
 
+    do{
+        h = h * 3 + 1;
+    }
     while(h < n);
+
     do{
         h /= 3; /* h = (h - 1) / 3 */
         for(i = h; i < n; i++){
@@ -23,6 +27,7 @@ void shellSort (int *A, int n){
                 if(j < h) break;
             }
             A[j] = aux;
+
         }
 
     }
