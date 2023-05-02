@@ -51,7 +51,7 @@ int obterQuantidade(){
         printf("    [ 4 ] 20.000 Amostras\n\n");
         printf("    [ 5 ] 50.000 Amostras\n\n");
         printf("    [ 6 ] 100.000 Amostras\n\n");
-        printf("    [ 7 ] 10.000.000 Amostras\n\n");
+        printf("    [ 7 ] 1.000.000 Amostras\n\n");
         printf("    [ 0 ] Voltar\n\n\n");
         printf(" > Escolha uma opção: ");
 
@@ -79,7 +79,7 @@ int obterQuantidade(){
                     resp = 100000;
                     break;
                 case 7:
-                    resp = 10000000;
+                    resp = 1000000;
                     break;
             }
             op = 0;
@@ -107,9 +107,9 @@ int *copiarLista(int *lista, int tamanho){
 
     int *listaCopiada = (int*) calloc(tamanho, sizeof(int));
 
-    for(int i = tamanho -1, j = 0; i >= 0; i--, j++){
+    for(int i = 0; i < tamanho; i++){
 
-        listaCopiada[j] = lista[i];
+        listaCopiada[i] = lista[i];
 
     }
 
@@ -137,14 +137,17 @@ double medirIntervalo(struct timeval Tempo_inicial, struct timeval Tempo_final){
 }
 
 void amostrar(int *lista, char *descr){
+// Obtem uma amostra de 50 números de uma lista e a exibe na tela.
+// Esta função foi implementada com a intenção de verificar de forma simples a lista antes e depois
+// de ordenada. Recebe para fins de identificação uma descrição por parâmetro e a exibe na tela.
 
-    printf("    > Amostra: %s\n ", descr);
+    printf("    > Amostra: %s\n\n", descr);
 
     for(int i = 0; i < 50; i++){
 
         printf(" %6d |", lista[i] );
+        if(i != 0 && !((i + 1) % 10)){printf("\n");}
 
-        if(!(i % 10)){printf("\n ");}
     }
     printf("\n\n");
 }
@@ -182,7 +185,7 @@ void mostrarResultados(double *tempos, char *opNome, int quantidade, int *listaO
         if(op == 1){
 
             gerarHeader();
-            printf(" > Resultados: %s\n\n", opNome);
+            printf("    > Resultados: %s\n\n", opNome);
             amostrar(listaOriginal, "Lista original");
             amostrar(listaOrganizada, "Lista organizada");
 
@@ -191,20 +194,18 @@ void mostrarResultados(double *tempos, char *opNome, int quantidade, int *listaO
         }
     }
     while(op);
-
 }
 
 int executar(int op, int quant){
 
     struct timeval antes, depois;
-    int aux;
-    int *lista, *listaOriginal, *listaInvertida;//, *listaFinal;
+    int *lista, *listaOriginal, *listaInvertida, *listaOrganizada;
     double *t; // Lista para armazenar os tempos.
     char *opNome; // Nome da operação para ser exibido nos resultados
 
     t =  (double*) calloc(12, sizeof(double));  // Os índices de 0 a 9 armazenarão as 10 primeiras medições.
-                                                             // Os índices 10 e 11 armazenarão, respectivamente, as medições
-                                                             // para o comportamento natural e para o pior caso.
+                                                // Os índices 10 e 11 armazenarão, respectivamente, as medições
+                                                // para o comportamento natural e para o pior caso.
     system("cls");
     gerarHeader();
     printf("\n > Executando...\n\n");
@@ -218,322 +219,381 @@ int executar(int op, int quant){
         if(!lista || !t){ return 0;}
 
         switch(op){
-        case 1: // --> Shell sort
+        case 1:
+
+            // Shell sort
+
+            gettimeofday(&antes, NULL);
+
+                shellSort(lista, quant);
+
+            gettimeofday(&depois, NULL);
+            t[i] = medirIntervalo(antes, depois);
+
+            printf("    --  T%d: %fs\n", i + 1, t[i]);
+
+            if(i == 9){
                 gettimeofday(&antes, NULL);
 
-                    shellSort(lista, quant);
+                    shellSort(lista, quant); // medição de tempo com a lista organizada
 
                 gettimeofday(&depois, NULL);
-                t[i] = medirIntervalo(antes, depois);
+                t[10] = medirIntervalo(antes, depois);
 
-                printf("    --  T%d: %fs\n", i + 1, t[i]);
+                printf("    --  T. Lista organizada: %fs\n", t[10]);
 
-                if(i == 9){
-                     gettimeofday(&antes, NULL);
-                    // medição de tempo natural
-                        shellSort(lista, quant);
-
-                    gettimeofday(&depois, NULL);
-                    t[10] = medirIntervalo(antes, depois);
-
-                   // t[10] = 565;
-                    printf("    --  T Lista organizada: %fs\n", t[10]);
-
-                    listaInvertida = inverterLista(lista, quant);
-
-                    gettimeofday(&antes, NULL);
-                    // medição de tempo - pior caso
-                        shellSort(listaInvertida, quant);
-
-                    gettimeofday(&depois, NULL);
-                    t[11] = medirIntervalo(antes, depois);
-                   // t[11] = 44;
-                    printf("    --  T Lista invertida: %fs\n", t[11]);
-
-                    opNome = "Shell Sort";
-                }
-            break;
-
-            case 2: // --> Bubble sort
-                gettimeofday(&antes, NULL);
-
-                    bubbleSort(lista, quant);
-
-                gettimeofday(&depois, NULL);
-                t[i] = medirIntervalo(antes, depois);
-
-                printf("    --  T%d: %fs\n", i + 1, t[i]);
-
-                if(i == 9){
-                     gettimeofday(&antes, NULL);
-                    // medição de tempo natural
-                        bubbleSort(lista, quant);
-
-                    gettimeofday(&depois, NULL);
-                    t[10] = medirIntervalo(antes, depois);
-                    printf("    --  T Lista organizada: %fs\n", t[10]);
-
-                    listaInvertida = inverterLista(lista, quant);
-                    gettimeofday(&antes, NULL);
-                    // medição de tempo - pior caso
-                        bubbleSort(listaInvertida, quant);
-
-                    gettimeofday(&depois, NULL);
-                    t[11] = medirIntervalo(antes, depois);
-                    printf("    --  T Lista invertida: %fs\n", t[11]);
-
-                    opNome = "Bubble Sort";
-                }
-            break;
-
-            case 3: // --> Merge sort
-                gettimeofday(&antes, NULL);
-
-                    mergeSort(lista, 0, quant);
-
-                gettimeofday(&depois, NULL);
-                t[i] = medirIntervalo(antes, depois);
-
-                printf("    --  T%d: %fs\n", i + 1, t[i]);
-
-                if(i == 9){
-                     gettimeofday(&antes, NULL);
-                    // medição de tempo natural
-                        mergeSort(lista, 0, quant);
-
-                    gettimeofday(&depois, NULL);
-                    t[10] = medirIntervalo(antes, depois);
-                    printf("    --  T Lista organizada: %fs\n", t[10]);
-
-                    listaInvertida = inverterLista(lista, quant);
-                    gettimeofday(&antes, NULL);
-                    // medição de tempo - pior caso
-                        mergeSort(listaInvertida, 0, quant);
-
-                    gettimeofday(&depois, NULL);
-                    t[11] = medirIntervalo(antes, depois);
-                    printf("    --  T Lista invertida: %fs\n", t[11]);
-
-                    opNome = "Merge Sort";
-                }
-            break;
-
-            case 4: // --> Insertion sort
-                gettimeofday(&antes, NULL);
-
-                    insertionSort(lista, quant);
-
-                gettimeofday(&depois, NULL);
-                t[i] = medirIntervalo(antes, depois);
-
-                printf("    --  T%d: %fs\n", i + 1, t[i]);
-
-                if(i == 9){
-                     gettimeofday(&antes, NULL);
-                    // medição de tempo natural
-                        insertionSort(lista, quant);
-
-                    gettimeofday(&depois, NULL);
-                    t[10] = medirIntervalo(antes, depois);
-                    printf("    --  T Lista organizada: %fs\n", t[10]);
-
-                    listaInvertida = inverterLista(lista, quant);
-                    gettimeofday(&antes, NULL);
-                    // medição de tempo - pior caso
-                        insertionSort(listaInvertida, quant);
-
-                    gettimeofday(&depois, NULL);
-                    t[11] = medirIntervalo(antes, depois);
-                    printf("    --  T Lista invertida: %fs\n", t[11]);
-
-                    opNome = "Insertion Sort";
-                }
-            break;
-
-            case 5: // --> Quick sort
-                gettimeofday(&antes, NULL);
-
-                    quickSort(lista, 0, quant );
-
-                gettimeofday(&depois, NULL);
-                t[i] = medirIntervalo(antes, depois);
-
-                printf("    --  T%d: %fs\n", i + 1, t[i]);
-
-                if(i == 9){
-                     gettimeofday(&antes, NULL);
-                    // medição de tempo natural
-                        quickSort(lista, 0, quant);
-
-                    gettimeofday(&depois, NULL);
-                    t[10] = medirIntervalo(antes, depois);
-                    printf("    --  T Lista organizada: %fs\n", t[10]);
-
-                    listaInvertida = inverterLista(lista, quant);
-                    gettimeofday(&antes, NULL);
-                    // medição de tempo - pior caso
-                        quickSort(listaInvertida, 0, quant);
-
-                    gettimeofday(&depois, NULL);
-                    t[11] = medirIntervalo(antes, depois);
-                    printf("    --  T Lista invertida: %fs\n", t[11]);
-
-                    opNome = "Quick Sort";
-                }
-            break;
-
-            case 6: // --> Selection sort
-                gettimeofday(&antes, NULL);
-
-                    selectionSort(lista, quant);
-
-                gettimeofday(&depois, NULL);
-                t[i] = medirIntervalo(antes, depois);
-
-                printf("    --  T%d: %fs\n", i + 1, t[i]);
-
-                if(i == 9){
-                     gettimeofday(&antes, NULL);
-                    // medição de tempo natural
-                        selectionSort(lista, quant);
-
-                    gettimeofday(&depois, NULL);
-                    t[10] = medirIntervalo(antes, depois);
-                    printf("    --  T Lista organizada: %fs\n", t[10]);
-
-                    listaInvertida = inverterLista(lista, quant);
-                    gettimeofday(&antes, NULL);
-                    // medição de tempo - pior caso
-                        selectionSort(listaInvertida, quant);
-
-                    gettimeofday(&depois, NULL);
-                    t[11] = medirIntervalo(antes, depois);
-                    printf("    --  T Lista invertida: %fs\n", t[11]);
-
-                    opNome = "Selection Sort";
-                }
-            break;
-
-            case 7: // --> Heap sort mínimo
-
-                aux = sizeof(lista) / sizeof(lista[0]);
+                listaOrganizada = copiarLista(lista, quant); // A lista utilizada no último ciclo é copiada antes de ser liberada da memória.
+                listaInvertida = inverterLista(lista, quant);
 
                 gettimeofday(&antes, NULL);
 
-                    heapSort(lista, aux);
+                    shellSort(listaInvertida, quant); // medição de tempo com a lista invertida
 
                 gettimeofday(&depois, NULL);
-                t[i] = medirIntervalo(antes, depois);
+                t[11] = medirIntervalo(antes, depois);
 
-                printf("    --  T%d: %fs\n", i + 1, t[i]);
+                printf("    --  T. Lista invertida: %fs\n", t[11]);
 
-                if(i == 9){
-                    aux = sizeof(lista) / sizeof(lista[0]);
-                    gettimeofday(&antes, NULL);
-                    // medição de tempo natural
-                        heapSort(lista, aux);
+                opNome = "Shell Sort";
+            }
+        break;
 
-                    gettimeofday(&depois, NULL);
-                    t[10] = medirIntervalo(antes, depois);
-                    printf("    --  T Lista organizada: %fs\n", t[10]);
+        case 2:
 
-                    listaInvertida = inverterLista(lista, quant);
-                    aux = sizeof(listaInvertida) / sizeof(listaInvertida[0]);
-                    gettimeofday(&antes, NULL);
-                    // medição de tempo - pior caso
-                        heapSort(listaInvertida, aux);
+             // Bubble sort
 
-                    gettimeofday(&depois, NULL);
-                    t[11] = medirIntervalo(antes, depois);
-                    printf("    --  T Lista invertida: %fs\n", t[11]);
+            gettimeofday(&antes, NULL);
 
-                    opNome = "Heap Sort";
-                }
-            break;
+                bubbleSort(lista, quant);
 
-            case 8: // --> Tim Sort
+            gettimeofday(&depois, NULL);
+            t[i] = medirIntervalo(antes, depois);
 
-                aux = sizeof(lista) / sizeof(lista[0]);
+            printf("    --  T%d: %fs\n", i + 1, t[i]);
+
+            if(i == 9){
 
                 gettimeofday(&antes, NULL);
 
-                    timSort(lista, quant, 4);
+                    bubbleSort(lista, quant); // medição com lista organizada
 
                 gettimeofday(&depois, NULL);
-                t[i] = medirIntervalo(antes, depois);
 
-                printf("    --  T%d: %fs\n", i + 1, t[i]);
+                t[10] = medirIntervalo(antes, depois);
+                printf("    --  T. Lista organizada: %fs\n", t[10]);
 
-                if(i == 9){
-                    aux = sizeof(lista) / sizeof(lista[0]);
-                    gettimeofday(&antes, NULL);
-                    // medição de tempo natural
-                        timSort(lista, quant, 4);
-
-                    gettimeofday(&depois, NULL);
-                    t[10] = medirIntervalo(antes, depois);
-                    printf("    --  T Lista organizada: %fs\n", t[10]);
-
-                    listaInvertida = inverterLista(lista, quant);
-                    aux = sizeof(listaInvertida) / sizeof(listaInvertida[0]);
-                    gettimeofday(&antes, NULL);
-                    // medição de tempo - pior caso
-                        timSort(listaInvertida, quant, 4);
-
-                    gettimeofday(&depois, NULL);
-                    t[11] = medirIntervalo(antes, depois);
-                    printf("    --  T Lista invertida: %fs\n", t[11]);
-
-                    opNome = "Tim Sort";
-                }
-            break;
-
-            case 9: // --> Radix Sort
-
-                aux = sizeof(lista) / sizeof(lista[0]);
+                listaOrganizada = copiarLista(lista, quant);
+                listaInvertida = inverterLista(lista, quant);
 
                 gettimeofday(&antes, NULL);
 
-                    radix_sort_lsd(lista, aux);
+                    bubbleSort(listaInvertida, quant); // medição com lista invertida
 
                 gettimeofday(&depois, NULL);
-                t[i] = medirIntervalo(antes, depois);
 
-                printf("    --  T%d: %fs\n", i + 1, t[i]);
+                t[11] = medirIntervalo(antes, depois);
+                printf("    --  T. Lista invertida: %fs\n", t[11]);
 
-                if(i == 9){
-                    aux = sizeof(lista) / sizeof(lista[0]);
-                    gettimeofday(&antes, NULL);
-                    // medição de tempo natural
-                        radix_sort_lsd(lista, aux);
+                opNome = "Bubble Sort";
+            }
+        break;
 
-                    gettimeofday(&depois, NULL);
-                    t[10] = medirIntervalo(antes, depois);
-                    printf("    --  T Lista organizada: %fs\n", t[10]);
+        case 3:
 
-                    listaInvertida = inverterLista(lista, quant);
-                    aux = sizeof(listaInvertida) / sizeof(listaInvertida[0]);
-                    gettimeofday(&antes, NULL);
-                    // medição de tempo - pior caso
-                        radix_sort_lsd(listaInvertida, aux);
+            // Merge sort
 
-                    gettimeofday(&depois, NULL);
-                    t[11] = medirIntervalo(antes, depois);
-                    printf("    --  T Lista invertida: %fs\n", t[11]);
+            gettimeofday(&antes, NULL);
 
-                    opNome = "Radix Sort";
-                }
-            break;
+                mergeSort(lista, 0, quant);
+
+            gettimeofday(&depois, NULL);
+
+            t[i] = medirIntervalo(antes, depois);
+
+            printf("    --  T%d: %fs\n", i + 1, t[i]);
+
+            if(i == 9){
+
+                gettimeofday(&antes, NULL);
+
+                    mergeSort(lista, 0, quant); // medição com lista organizada
+
+                gettimeofday(&depois, NULL);
+
+                t[10] = medirIntervalo(antes, depois);
+                printf("    --  T. Lista organizada: %fs\n", t[10]);
+
+                listaOrganizada = copiarLista(lista, quant);
+                listaInvertida = inverterLista(lista, quant);
+
+                gettimeofday(&antes, NULL);
+
+                    mergeSort(listaInvertida, 0, quant); // medição com lista invertida
+
+                gettimeofday(&depois, NULL);
+
+                t[11] = medirIntervalo(antes, depois);
+                printf("    --  T. Lista invertida: %fs\n", t[11]);
+
+                opNome = "Merge Sort";
+            }
+        break;
+
+        case 4:
+
+            // Insertion sort
+
+            gettimeofday(&antes, NULL);
+
+                insertionSort(lista, quant);
+
+            gettimeofday(&depois, NULL);
+
+            t[i] = medirIntervalo(antes, depois);
+
+            printf("    --  T%d: %fs\n", i + 1, t[i]);
+
+            if(i == 9){
+
+                gettimeofday(&antes, NULL);
+
+                    insertionSort(lista, quant); // medição de tempo com a lista organizada
+
+                gettimeofday(&depois, NULL);
+                t[10] = medirIntervalo(antes, depois);
+
+                printf("    --  T. Lista organizada: %fs\n", t[10]);
+
+                listaOrganizada = copiarLista(lista, quant); // A lista utilizada no último ciclo é copiada antes de ser liberada da memória.
+                listaInvertida = inverterLista(lista, quant);
+
+                gettimeofday(&antes, NULL);
+
+                    insertionSort(listaInvertida, quant); // medição de tempo com a lista invertida
+
+                gettimeofday(&depois, NULL);
+                t[11] = medirIntervalo(antes, depois);
+
+                printf("    --  T. Lista invertida: %fs\n", t[11]);
+
+                opNome = "Insertion Sort";
+            }
+        break;
+
+        case 5:
+
+            // Quick sort
+
+            gettimeofday(&antes, NULL);
+
+                quickSort(lista, 0, quant );
+
+            gettimeofday(&depois, NULL);
+
+            t[i] = medirIntervalo(antes, depois);
+
+            printf("    --  T%d: %fs\n", i + 1, t[i]);
+
+            if(i == 9){
+
+                gettimeofday(&antes, NULL);
+
+                    quickSort(lista, 0, quant); // medição com lista organizada
+
+                gettimeofday(&depois, NULL);
+
+                t[10] = medirIntervalo(antes, depois);
+                printf("    --  T. Lista organizada: %fs\n", t[10]);
+
+                listaOrganizada = copiarLista(lista, quant); // A lista utilizada no último ciclo é copiada antes de ser liberada da memória.
+                listaInvertida = inverterLista(lista, quant);
+
+                gettimeofday(&antes, NULL);
+
+                    quickSort(listaInvertida, 0, quant); // medição com lista invertida
+
+                gettimeofday(&depois, NULL);
+
+                t[11] = medirIntervalo(antes, depois);
+                printf("    --  T. Lista invertida: %fs\n", t[11]);
+
+                opNome = "Quick Sort";
+            }
+        break;
+
+        case 6:
+
+            // Selection sort
+
+            gettimeofday(&antes, NULL);
+
+                selectionSort(lista, quant);
+
+            gettimeofday(&depois, NULL);
+            t[i] = medirIntervalo(antes, depois);
+
+            printf("    --  T%d: %fs\n", i + 1, t[i]);
+
+            if(i == 9){
+
+                gettimeofday(&antes, NULL);
+
+                    selectionSort(lista, quant); // medição de tempo com a lista organizada
+
+                gettimeofday(&depois, NULL);
+                t[10] = medirIntervalo(antes, depois);
+
+                printf("    --  T. Lista organizada: %fs\n", t[10]);
+
+                listaOrganizada = copiarLista(lista, quant); // A lista utilizada no último ciclo é copiada antes de ser liberada da memória.
+                listaInvertida = inverterLista(lista, quant);
+
+                gettimeofday(&antes, NULL);
+
+                    selectionSort(listaInvertida, quant); // medição de tempo com a lista invertida
+
+                gettimeofday(&depois, NULL);
+                t[11] = medirIntervalo(antes, depois);
+
+                printf("    --  T. Lista invertida: %fs\n", t[11]);
+
+                opNome = "Selection Sort";
+            }
+        break;
+
+        case 7:
+
+            // Heap sort
+
+            gettimeofday(&antes, NULL);
+
+                heapSort(lista, quant);
+
+            gettimeofday(&depois, NULL);
+            t[i] = medirIntervalo(antes, depois);
+
+            printf("    --  T%d: %fs\n", i + 1, t[i]);
+
+            if(i == 9){
+
+                gettimeofday(&antes, NULL);
+
+                    heapSort(lista, quant); // medição de tempo com a lista organizada
+
+                gettimeofday(&depois, NULL);
+                t[10] = medirIntervalo(antes, depois);
+
+                printf("    --  T. Lista organizada: %fs\n", t[10]);
+
+                listaOrganizada = copiarLista(lista, quant); // A lista utilizada no último ciclo é copiada antes de ser liberada da memória.
+                listaInvertida = inverterLista(lista, quant);
+
+                gettimeofday(&antes, NULL);
+
+                    heapSort(listaInvertida, quant); // medição de tempo com a lista invertida
+
+                gettimeofday(&depois, NULL);
+                t[11] = medirIntervalo(antes, depois);
+
+                printf("    --  T. Lista invertida: %fs\n", t[11]);
+
+                opNome = "Heap Sort";
+            }
+        break;
+
+        case 8:
+
+            // Tim Sort
+
+            gettimeofday(&antes, NULL);
+
+                timSort(lista, quant);
+
+            gettimeofday(&depois, NULL);
+            t[i] = medirIntervalo(antes, depois);
+
+            printf("    --  T%d: %fs\n", i + 1, t[i]);
+
+            if(i == 9){
+
+                gettimeofday(&antes, NULL);
+
+                    timSort(lista, quant); // medição de tempo com a lista organizada
+
+                gettimeofday(&depois, NULL);
+                t[10] = medirIntervalo(antes, depois);
+
+                printf("    --  T. Lista organizada: %fs\n", t[10]);
+
+                listaOrganizada = copiarLista(lista, quant); // A lista utilizada no último ciclo é copiada antes de ser liberada da memória.
+                listaInvertida = inverterLista(lista, quant);
+
+                gettimeofday(&antes, NULL);
+
+                    timSort(listaInvertida, quant); // medição de tempo com a lista invertida
+
+                gettimeofday(&depois, NULL);
+                t[11] = medirIntervalo(antes, depois);
+
+                printf("    --  T. Lista invertida: %fs\n", t[11]);
+
+                opNome = "Tim Sort";
+            }
+        break;
+
+        case 9:
+
+            // Radix Sort
+
+            gettimeofday(&antes, NULL);
+
+                radixSort(lista, quant);
+
+            gettimeofday(&depois, NULL);
+            t[i] = medirIntervalo(antes, depois);
+
+            printf("    --  T%d: %fs\n", i + 1, t[i]);
+
+            if(i == 9){
+
+                gettimeofday(&antes, NULL);
+
+                    radixSort(lista, quant); // medição de tempo com a lista organizada
+
+                gettimeofday(&depois, NULL);
+                t[10] = medirIntervalo(antes, depois);
+
+                printf("    --  T. Lista organizada: %fs\n", t[10]);
+
+                listaOrganizada = copiarLista(lista, quant); // A lista utilizada no último ciclo é copiada antes de ser liberada da memória.
+                listaInvertida = inverterLista(lista, quant);
+
+                gettimeofday(&antes, NULL);
+
+                    radixSort(listaInvertida, quant); // medição de tempo com a lista invertida
+
+                gettimeofday(&depois, NULL);
+                t[11] = medirIntervalo(antes, depois);
+
+                printf("    --  T. Lista invertida: %fs\n", t[11]);
+
+                opNome = "Radix Sort";
+            }
+        break;
         }
 
+        free(lista);
     }
 
-    mostrarResultados(t, opNome, quant, listaOriginal, lista);
+    mostrarResultados(t, opNome, quant, listaOriginal, listaOrganizada);
 
     free(listaInvertida);
     free(listaOriginal);
-    free(lista);
+    free(listaOrganizada);
     free(t);
 
     return 0;
 }
+
+
+

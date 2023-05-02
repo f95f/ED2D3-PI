@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "sorts.h"
-#define min(a,b) (a)<(b)?(a):(b)
 
 void shellSort (int A[], int n){
 
@@ -147,26 +146,25 @@ void merge(int arr[], int inicio, int meio, int fim){
     }
 }
 
-void heapify(int *vet, int n, int i) {
-    int min = i;
+void heapify(int vet[], int n, int i) {
+    int max = i;
     int e = 2 * i + 1;
     int d = 2 * i + 2;
 
-    if (e < n && vet[e] < vet[min])
-        min = e;
+    if (e < n && vet[e] > vet[max])
+        max = e;
 
-    if (d < n && vet[d] < vet[min])
-        min = d;
+    if (d < n && vet[d] > vet[max])
+        max = d;
 
-    if (min != i) {
+    if (max != i) {
         int aux = vet[i];
-        vet[i] = vet[min];
-        vet[min] = aux;
-        heapify(vet, n, min);
+        vet[i] = vet[max];
+        vet[max] = aux;
+        heapify(vet, n, max);
     }
 }
-void heapSort(int *vet, int n) {
-
+void heapSort(int vet[], int n) {
     for (int i = n / 2 - 1; i >= 0; i--)
         heapify(vet, n, i);
 
@@ -210,91 +208,126 @@ void quickSort(int *vetor, int inicio, int fim) {
     }
 }
 
-void radix_sort_lsd(int arr[], int n) {
+int getMax(int *vetor, int n) {
 
-    int max_num = arr[0];
-
+    int max = vetor[0];
     for (int i = 1; i < n; i++) {
-        if (arr[i] > max_num) {
-            max_num = arr[i];
+        if (vetor[i] > max) {
+            max = vetor[i];
         }
     }
+    return max;
+}
+void contar(int *vetor, int n, int exp) {
+    int lista[n];
+    int contagem[10] = {0};
 
-    int exp = 1;
+    for (int i = 0; i < n; i++) {
+        contagem[(vetor[i] / exp) % 10]++;
+    }
 
-    while (max_num / exp > 0) {
-        int buckets[10][n];
-        int bucket_sizes[10] = {0};
+    for (int i = 1; i < 10; i++) {
+        contagem[i] += contagem[i - 1];
+    }
 
-        for (int i = 0; i < n; i++) {
-            int digit = (arr[i] / exp) % 10;
-            buckets[digit][bucket_sizes[digit]] = arr[i];
-            bucket_sizes[digit]++;
-        }
+    for (int i = n - 1; i >= 0; i--) {
+        lista[contagem[(vetor[i] / exp) % 10] - 1] = vetor[i];
+        contagem[(vetor[i] / exp) % 10]--;
+    }
 
-        int k = 0;
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < bucket_sizes[i]; j++) {
-                arr[k] = buckets[i][j];
-                k++;
-            }
-        }
-
-        exp *= 10;
+    for (int i = 0; i < n; i++) {
+        vetor[i] = lista[i];
     }
 }
-void insertionSortRun(int arr[], int left, int right) {
-    for (int i = left + 1; i <= right; i++) {
-        int temp = arr[i];
-        int j = i - 1;
-        while (j >= left && arr[j] > temp) {
-            arr[j + 1] = arr[j];
-            j--;
-        }
-        arr[j + 1] = temp;
+void radixSort(int *vetor, int n) {
+
+    int max = getMax(vetor, n);
+
+    for (int exp = 1; max / exp > 0; exp *= 10) {
+        contar(vetor, n, exp);
     }
 }
-void mergeRun(int arr[], int l, int m, int r) {
-    int len1 = m - l + 1, len2 = r - m;
-    int left[len1], right[len2];
-    for (int i = 0; i < len1; i++)
-        left[i] = arr[l + i];
-    for (int i = 0; i < len2; i++)
-        right[i] = arr[m + 1 + i];
-    int i = 0;
-    int j = 0;
-    int k = l;
-    while (i < len1 && j < len2) {
-        if (left[i] <= right[j]) {
-            arr[k] = left[i];
+
+const int RUN = 64;
+int minimo(int a, int b){
+
+    if(a < b){
+        return a;
+    }
+    else{
+        return b;
+    }
+}
+void timInsertion(int a[], int inicio, int fim){
+
+    int i, j, temp;
+
+    for (i = inicio + 1; i <= fim; i++) {
+
+        temp = a[i];
+        j = i - 1;
+
+        while(j >= 0 && temp <= a[j]){
+
+            a[j+1] = a[j];
+            j = j-1;
+        }
+        a[j+1] = temp;
+    }
+}
+void timMerge(int a[], int inicio, int meio, int fim){
+
+    int i, j, k;
+    int n1 = meio - inicio + 1;
+    int n2 = fim - meio;
+    int vetorEsquerdo[n1], vetorDireito[n2];
+
+    for (int i = 0; i < n1; i++) vetorEsquerdo[i] = a[inicio + i];
+    for (int j = 0; j < n2; j++) vetorDireito[j] = a[meio +1 + j];
+
+    i = 0;
+    j = 0;
+    k = inicio;
+
+    while(i < n1 && j < n2){
+
+        if(vetorEsquerdo[i] <= vetorDireito[j]){
+
+            a[k] = vetorEsquerdo[i];
             i++;
-        } else {
-            arr[k] = right[j];
+        }
+        else{
+
+            a[k] = vetorDireito[j];
             j++;
         }
         k++;
     }
-    while (i < len1) {
-        arr[k] = left[i];
-        k++;
+    while(i < n1){
+
+        a[k] = vetorEsquerdo[i];
         i++;
-    }
-    while (j < len2) {
-        arr[k] = right[j];
         k++;
+    }
+    while(j < n2){
+
+        a[k] = vetorDireito[j];
         j++;
+        k++;
     }
 }
-void timSort(int arr[], int n, int run) {
-    for (int i = 0; i < n; i += run) {
-        insertionSortRun(arr, i, min((i + 3), (n - 1)));
-    }
+void timSort(int a[], int n){
 
-    for (int size = run; size < n; size = 2 * size) {
-        for (int left = 0; left < n; left += 2 * size) {
-            int mid = left + size - 1;
-            int right = min((left + 2 * size - 1), (n - 1));
-            mergeRun(arr, left, mid, right);
+    for(int i = 0; i < n; i+=RUN) timInsertion(a, i, minimo((i + RUN -1), (n -1)));
+
+    for(int size = RUN; size < n; size = 2*size){
+
+        for(int inicio = 0; inicio < n; inicio += 2*size){
+
+            int meio = inicio + size - 1;
+            int fim = minimo((inicio + 2 * size - 1),(n-1));
+
+            if(meio < fim) timMerge(a, inicio, meio, fim);
         }
     }
 }

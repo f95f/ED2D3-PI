@@ -29,3 +29,87 @@
 	<stdio.h>
 	<stdlib.h>
 
+1682728081 source:c:\users\aluno\desktop\a\ed2d3-pi\p1_gu3026965\main.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	"utilidades.h"
+
+1682728081 c:\users\aluno\desktop\a\ed2d3-pi\p1_gu3026965\utilidades.h
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+
+1682728240 source:c:\users\aluno\desktop\a\ed2d3-pi\p1_gu3026965\sorts.c
+	<stdio.h>
+	<stdlib.h>
+	"sorts.h"
+
+1682728081 c:\users\aluno\desktop\a\ed2d3-pi\p1_gu3026965\sorts.h
+	<stdio.h>
+	<stdlib.h>
+
+1682728920 source:c:\users\aluno\desktop\a\ed2d3-pi\p1_gu3026965\utilidades.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	<time.h>
+	"sorts.h"
+	"utilidades.h"
+
+1682885668 source:c:\users\95fel\onedrive\documentos\projeto 1 ed1d3\a\ed2d3-pi\p1_gu3026965\main.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	"utilidades.h"
+
+1682885996 c:\users\95fel\onedrive\documentos\projeto 1 ed1d3\a\ed2d3-pi\p1_gu3026965\utilidades.h
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+
+1682920310 source:c:\users\95fel\onedrive\documentos\projeto 1 ed1d3\a\ed2d3-pi\p1_gu3026965\sorts.c
+	<stdio.h>
+	<stdlib.h>
+	"sorts.h"
+
+1682920310 c:\users\95fel\onedrive\documentos\projeto 1 ed1d3\a\ed2d3-pi\p1_gu3026965\sorts.h
+	<stdio.h>
+	<stdlib.h>
+
+1682895664 source:c:\users\95fel\onedrive\documentos\projeto 1 ed1d3\a\ed2d3-pi\p1_gu3026965\utilidades.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	<time.h>
+	"sorts.h"
+	"utilidades.h"
+
+1682885668 source:c:\users\95fel\onedrive\documentos\projeto avaliativo i - gu3026965\p1_gu3026965\main.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	"utilidades.h"
+
+1682885996 c:\users\95fel\onedrive\documentos\projeto avaliativo i - gu3026965\p1_gu3026965\utilidades.h
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+
+1682920467 source:c:\users\95fel\onedrive\documentos\projeto avaliativo i - gu3026965\p1_gu3026965\sorts.c
+	<stdio.h>
+	<stdlib.h>
+	"sorts.h"
+
+1682920310 c:\users\95fel\onedrive\documentos\projeto avaliativo i - gu3026965\p1_gu3026965\sorts.h
+	<stdio.h>
+	<stdlib.h>
+
+1682895664 source:c:\users\95fel\onedrive\documentos\projeto avaliativo i - gu3026965\p1_gu3026965\utilidades.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	<time.h>
+	"sorts.h"
+	"utilidades.h"
+
